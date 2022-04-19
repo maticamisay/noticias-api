@@ -10,13 +10,65 @@ const NoticiasProvider = ({ children }) => {
   const [pagina, setPagina] = useState(1);
   const [totalNoticias, setTotalNoticias] = useState(0);
 
+  // const options = {
+  //   method: "GET",
+  //   url: "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/search/TrendingNewsAPI",
+  //   params: {
+  //     pageNumber: "1",
+  //     pageSize: "10",
+  //     withThumbnails: "false",
+  //     location: "us",
+  //   },
+  //   headers: {
+  //     "X-RapidAPI-Host": "contextualwebsearch-websearch-v1.p.rapidapi.com",
+  //     "X-RapidAPI-Key": "d05773b8ddmsh6957041315b86a0p125a35jsn81d6227b7196",
+  //   },
+  // };
+
+  // axios
+  //   .request(options)
+  //   .then(function (response) {
+  //     console.log(response.data);
+  //   })
+  //   .catch(function (error) {
+  //     console.error(error);
+  //   });
+  useEffect(() => {
+    const options = {
+      method: "GET",
+      url: "https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/search/TrendingNewsAPI",
+      params: {
+        pageNumber: "1",
+        pageSize: "10",
+        withThumbnails: "false",
+        location: "us",
+      },
+      headers: {
+        "X-RapidAPI-Host": "contextualwebsearch-websearch-v1.p.rapidapi.com",
+        "X-RapidAPI-Key": "d05773b8ddmsh6957041315b86a0p125a35jsn81d6227b7196",
+      },
+    };
+    axios
+      .request(options)
+      .then(function (response) {
+        // console.log(response.data.value);
+        const data = response.data.value;
+        console.log(data);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  }, [categoria]);
+
   useEffect(() => {
     const consultarAPI = async () => {
-      const url = `https://api.mediastack.com/v1/news?access_key=3120efc858f8a846d907c8e3966e2f29
-      `;
+      const url = `https://newsapi.org/v2/top-headlines?pageSize=9&country=ar&category=${categoria}&apiKey=${
+        import.meta.env.VITE_API_KEY
+      }`;
       const { data } = await axios(url);
-      setNoticias(data.data);
-      setTotalNoticias(data.pagination.total);
+      console.log(data.articles);
+      setNoticias(data.articles);
+      setTotalNoticias(data.totalResults);
       setPagina(1);
     };
     consultarAPI();
