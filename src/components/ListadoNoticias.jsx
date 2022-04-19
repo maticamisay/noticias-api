@@ -9,7 +9,6 @@ const ListadoNoticias = () => {
     const { noticias, totalNoticias, handleChangePagina, pagina } = useNoticias()
 
     const totalPaginas = Math.ceil(totalNoticias / 9)
-console.log(pagina);
     return (
         <>
             <Typography

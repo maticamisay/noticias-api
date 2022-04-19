@@ -1,64 +1,84 @@
-import axios from 'axios'
-import { useState, useEffect, createContext } from 'react'
+import axios from "axios";
+import { useState, useEffect, createContext } from "react";
 
-const NoticiasContext = createContext()
+const NoticiasContext = createContext();
 
-const NoticiasProvider = ({children}) => {
-    const [categoria, setCategoria] = useState('general')
-    const [noticias, setNoticias] = useState([])
-    const [pagina, setPagina] = useState(1)
-    const [totalNoticias, setTotalNoticias] = useState(0)
+const NoticiasProvider = ({ children }) => {
+  const [categoria, setCategoria] = useState("general");
+  const [noticias, setNoticias] = useState([]);
+  const [busqueda, setBusqueda] = useState("");
+  const [pagina, setPagina] = useState(1);
+  const [totalNoticias, setTotalNoticias] = useState(0);
 
+  useEffect(() => {
+    const consultarAPI = async () => {
+      const url = `https://newsapi.org/v2/top-headlines?pageSize=9&country=ar&category=${categoria}&apiKey=${
+        import.meta.env.VITE_API_KEY
+      }`;
 
-    useEffect(() => {
-        const consultarAPI = async () => {
-            const url = `https://newsapi.org/v2/top-headlines?pageSize=9&country=ar&category=${categoria}&apiKey=${import.meta.env.VITE_API_KEY}`
+      const { data } = await axios(url);
+      setNoticias(data.articles);
+      setTotalNoticias(data.totalResults);
+      setPagina(1);
+    };
+    consultarAPI();
+  }, [categoria]);
 
-            const { data } = await axios(url)
-            setNoticias(data.articles)
-            setTotalNoticias(data.totalResults)
-            setPagina(1)
-        }
-        consultarAPI()
-    }, [categoria]) 
+  useEffect(() => {
+    const consultarAPI = async () => {
+      const url = `https://newsapi.org/v2/top-headlines?country=ar&pageSize=9&page=${pagina}&category=${categoria}&apiKey=${
+        import.meta.env.VITE_API_KEY
+      }`;
 
-    useEffect(() => {
-        const consultarAPI = async () => {
-            const url = `https://newsapi.org/v2/top-headlines?country=ar&pageSize=9&page=${pagina}&category=${categoria}&apiKey=${import.meta.env.VITE_API_KEY}`
+      const { data } = await axios(url);
+      setNoticias(data.articles);
+      setTotalNoticias(data.totalResults);
+    };
+    consultarAPI();
+  }, [pagina]);
 
-            const { data } = await axios(url)
-            setNoticias(data.articles)
-            setTotalNoticias(data.totalResults)
-        }
-        consultarAPI()
-    }, [ pagina]) 
-    
-    const handleChangeCategoria = e => {
-        setCategoria(e.target.value)
-    }
+  useEffect(() => {
+    const consultarAPI = async () => {
+      const url = `https://newsapi.org/v2/everything?q=${busqueda}&pageSize=9&apiKey=${
+        import.meta.env.VITE_API_KEY
+      }`;
+      const { data } = await axios(url);
+      setNoticias(data.articles);
+      setTotalNoticias(data.totalResults);
+      setPagina(1);
+    };
+    consultarAPI();
+  }, [busqueda]);
 
-    const handleChangePagina = (e, valor) => {
-        setPagina(valor)
-    }
+  const handleChangeCategoria = (e) => {
+    setCategoria(e.target.value);
+  };
 
-    return(
-        <NoticiasContext.Provider
-            value={{
-                categoria,
-                handleChangeCategoria,
-                noticias,
-                totalNoticias,
-                handleChangePagina,
-                pagina
-            }}
-        >
-            {children}
-        </NoticiasContext.Provider>
-    )
-}
+  const handleChangePagina = (e, valor) => {
+    setPagina(valor);
+  };
+  const handleChangeBusqueda = (e) => {
+    setBusqueda(e);
+    // console.log(e);
+  };
 
-export {
-    NoticiasProvider
-}
+  return (
+    <NoticiasContext.Provider
+      value={{
+        categoria,
+        handleChangeCategoria,
+        noticias,
+        totalNoticias,
+        handleChangePagina,
+        pagina,
+        handleChangeBusqueda,
+      }}
+    >
+      {children}
+    </NoticiasContext.Provider>
+  );
+};
 
-export default NoticiasContext
+export { NoticiasProvider };
+
+export default NoticiasContext;

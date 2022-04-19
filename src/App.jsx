@@ -3,6 +3,7 @@ import Formulario from "./components/Formulario";
 import ListadoNoticias from "./components/ListadoNoticias";
 import { NoticiasProvider } from "./context/NoticiasProvider";
 import Header from "./components/Header";
+import Buscador from "./components/Buscador";
 
 function App() {
   return (
@@ -14,8 +15,12 @@ function App() {
           direction="row"
           justifyContent="center"
           alignItems="center"
+          marginY={5}
         >
-          <Grid item xs={10} md={6} lg={4}>
+          <Grid item xs={8} md={5} lg={5} sx={{padding:"1rem"}}>
+            <Buscador />
+          </Grid>
+          <Grid item xs={8} md={5} lg={3} sx={{padding:"1rem"}}>
             <Formulario />
           </Grid>
         </Grid>
