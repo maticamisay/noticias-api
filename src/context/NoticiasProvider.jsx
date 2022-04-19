@@ -121,6 +121,10 @@ const NoticiasProvider = ({ children }) => {
   const handleChangePagina = (e, valor) => {
     setPagina(valor);
   };
+  const handleChangeBusqueda = (e) => {
+    setBusqueda(e);
+    // console.log(e);
+  };
 
   return (
     <NoticiasContext.Provider
@@ -131,8 +135,7 @@ const NoticiasProvider = ({ children }) => {
         totalNoticias,
         handleChangePagina,
         pagina,
-        busqueda,
-        setBusqueda,
+        handleChangeBusqueda,
       }}
     >
       {children}
