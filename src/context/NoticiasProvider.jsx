@@ -12,7 +12,7 @@ const NoticiasProvider = ({ children }) => {
 
   useEffect(() => {
     const consultarAPI = async () => {
-      const url = `http://api.mediastack.com/v1/news?access_key=3120efc858f8a846d907c8e3966e2f29
+      const url = `https://api.mediastack.com/v1/news?access_key=3120efc858f8a846d907c8e3966e2f29
       `;
       const { data } = await axios(url);
       setNoticias(data.data);
