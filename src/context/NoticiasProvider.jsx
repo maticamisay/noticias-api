@@ -47,7 +47,9 @@ const NoticiasProvider = ({ children }) => {
       setTotalNoticias(data.totalResults);
       setPagina(1);
     };
-    consultarAPI();
+    if (busqueda.length > 1) {
+      consultarAPI();
+    }
   }, [busqueda]);
 
   const handleChangeCategoria = (e) => {

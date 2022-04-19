@@ -4,11 +4,15 @@ import useNoticias from "../hooks/useNoticias";
 
 const Buscador = () => {
   const [buscador, setBuscador] = useState("");
+  const { handleChangeBusqueda } = useNoticias();
   const handleChangeBuscador = (e) => {
     setBuscador(e.target.value);
+    // e.target.value='hola'
   };
-  const { handleChangeBusqueda } = useNoticias();
-
+  const realizarBusqueda = () =>{
+    handleChangeBusqueda(buscador)
+    
+  }
   return (
     <>
       <Grid
